@@ -1,5 +1,5 @@
 # Alafia
- Curated and Culturally-Aware Mental Wellness
+> Culturally-Aware Mosaics Based on your Mood
 
 ## How to Setup
 
@@ -17,7 +17,7 @@ Initialize virtual environment
 
 Activate virtual environment
 
-`source venv/bin/activate`
+`source .venv/bin/activate`
 
 Install dependencies
 
