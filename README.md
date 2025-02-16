@@ -1,5 +1,7 @@
 # Alafia
- Curated and Culturally-Aware Mental Wellness
+Sharable Culturally-Aware Mosaics Based on your Mood
+> Diego Serrano Martello, John Fitzgerald, Joshua Shiman and Joel Lawrence
+
 
 ## How to Setup
 
@@ -17,7 +19,7 @@ Initialize virtual environment
 
 Activate virtual environment
 
-`source venv/bin/activate`
+`source .venv/bin/activate`
 
 Install dependencies
 
