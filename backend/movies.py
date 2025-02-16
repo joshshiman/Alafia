@@ -16,7 +16,6 @@ TMDB_API_KEY = os.getenv('TMDB_API_KEY')
 TMDB_READ_TOKEN = os.getenv('TMDB_READ_TOKEN')
 
 # list create
-
 def getRequestToken():
     response = requests.get(
         "https://api.themoviedb.org/3/authentication/token/new",
@@ -200,11 +199,21 @@ def createMovieList():
                 'title': movie,
                 'poster_url': movie_data['poster_url']
             })
+    
+    try:
+        result = processPosters(movie_posters)
+        with open(result['collage_path'], 'rb') as f:
+            collage_bytes = f.read()
             
-    return jsonify({
-        'list_url': f'https://www.themoviedb.org/list/{list_id}',
-        'posters': movie_posters
-    })
+        shutil.rmtree(result['temp_dir'])
+        
+        return jsonify({
+            'list_url': f'https://www.themoviedb.org/list/{list_id}',
+            'collage': f"data:image/jpeg;base64,{base64.b64encode(collage_bytes).decode()}"
+        })
+        
+    except Exception as e:
+        return f'Error processing posters and creating list: {str(e)}', 500
 
 @app.route('/process-posters', methods=['POST'])
 def processPostersRoute():
