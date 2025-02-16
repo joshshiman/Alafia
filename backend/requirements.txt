@@ -1,2 +1,4 @@
-ollama
-langchain
+dotenv
+requests
+whisper
+flask
