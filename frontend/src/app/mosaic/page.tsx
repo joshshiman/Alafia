@@ -4,12 +4,14 @@ import { Fraunces } from "next/font/google"
 import { Inter } from "next/font/google"
 import Image from "next/image"
 import { Share, ChevronLeft, ChevronRight } from "lucide-react"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import Link from "next/link"
 import { useGlobalState } from '../context/GlobalStateContext'; // Adjust path if necessary
+import axios from 'axios';
+import { ClipLoader } from "react-spinners"
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -25,26 +27,26 @@ const inter = Inter({
 const mockContent = [
   {
     id: 1,
-    title: "Leadership Insights",
-    description: "Key strategies from successful leaders in tech",
+    title: "-",
+    description: "-",
     image: "/placeholder.svg?height=400&width=600",
   },
   {
     id: 2,
-    title: "Innovation Stories",
-    description: "Breaking barriers in STEM fields",
+    title: "",
+    description: "",
     image: "/placeholder.svg?height=400&width=600",
   },
   {
     id: 3,
-    title: "Community Impact",
-    description: "Making a difference through technology",
+    title: "",
+    description: "",
     image: "/placeholder.svg?height=400&width=600",
   },
   {
     id: 4,
-    title: "Tech Trends",
-    description: "Latest developments in technology",
+    title: "",
+    description: "",
     image: "/placeholder.svg?height=400&width=600",
   },
 ]
@@ -56,6 +58,41 @@ export default function MosaicPage() {
   const {
     res, setRes
   } = useGlobalState();
+  const [spotify, setSpotify] = useState<string>('');
+  const [image, setImage] = useState<any>(null);
+  const [movieLink, setMovieLink] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true)
+      try {
+        // Post the answers to the Flask backend
+        const response = await axios.post('http://localhost:5000/generate-content', {
+          answers: res
+        });
+
+        // Set the response data in the 'res' state
+        const { img, mv_link, playlist_id } = response.data;
+        // console.log(img)
+        console.log(playlist_id)
+        setSpotify(playlist_id);
+        setImage(img);
+        setMovieLink(mv_link);
+        
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setIsLoading(false); // End loading (hide spinner)
+      }
+    };
+
+    // Call the fetchData function
+    if (res && res.length > 0) {
+      fetchData();
+    }
+  }, [res]); // Dependency on 'answers' - API call will run whenever answers change
 
   const scroll = (direction: "left" | "right") => {
     if (!scrollContainerRef.current) return
@@ -109,8 +146,15 @@ export default function MosaicPage() {
         {/* Title */}
         <h1 className="text-3xl md:text-4xl text-white text-center font-serif mb-12">Your Alafia Mosaic</h1>
 
+        {isLoading && (
+        <div className="spinner-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh' }}>
+          <ClipLoader color="#36d7b7" size={50} />
+        </div>
+      )}
+
         {/* Content Carousel */}
-        <div className="relative group">
+        {(!isLoading && (spotify || image || movieLink)) && (
+          <div className="relative group">
           {/* Scroll buttons */}
           {canScrollLeft && (
             <button
@@ -142,13 +186,13 @@ export default function MosaicPage() {
               <div key={content.id} className="min-w-[600px] md:min-w-[600px] bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden snap-center transform transition-all hover:bg-white/15">
                 <div className=" h-72 md:h-72"> {/* Adjust the height here */}
                 <iframe
-                  src={`https://open.spotify.com/embed/playlist/5ZYhYLH41pIIJN3XsOIeDA?theme=0`}  // Ensure `spotifyId` is a valid track ID
+                  src={`https://open.spotify.com/embed/playlist/${spotify}?theme=0`}  // Ensure `spotifyId` is a valid track ID
                   width="100%"
                   height="400px"
                   frameBorder="0"
                   allow="encrypted-media"
                   className="absolute top-0 left-0 w-full h-full rounded-xl"
-                  title={content.title}
+                  // title={content.title}
                 ></iframe>
               </div>
                 <div className="p-6">
@@ -159,6 +203,9 @@ export default function MosaicPage() {
             ))}
           </div>
         </div>
+        )
+        }
+        
 
         {/* Share section */}
         <div className="mt-12 flex flex-col items-center gap-4">
