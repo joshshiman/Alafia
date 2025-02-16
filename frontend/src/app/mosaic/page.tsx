@@ -135,13 +135,18 @@ export default function MosaicPage() {
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {mockContent.map((content) => (
-              <div
-                key={content.id}
-                className="min-w-[300px] md:min-w-[400px] bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden snap-center transform transition-all hover:scale-[1.02] hover:bg-white/15"
-              >
-                <div className="relative h-48 md:h-64">
-                  <Image src={content.image || "/placeholder.svg"} alt={content.title} fill className="object-cover" />
-                </div>
+              <div key={content.id} className="min-w-[600px] md:min-w-[600px] bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden snap-center transform transition-all hover:bg-white/15">
+                <div className=" h-72 md:h-72"> {/* Adjust the height here */}
+                <iframe
+                  src={`https://open.spotify.com/embed/playlist/5DNPXxrdT3sqkyfOjPNvKG?theme=0`}  // Ensure `spotifyId` is a valid track ID
+                  width="100%"
+                  height="400px"
+                  frameBorder="0"
+                  allow="encrypted-media"
+                  className="absolute top-0 left-0 w-full h-full rounded-xl"
+                  title={content.title}
+                ></iframe>
+              </div>
                 <div className="p-6">
                   <h3 className="text-xl font-serif text-white mb-2">{content.title}</h3>
                   <p className="text-white/80">{content.description}</p>
