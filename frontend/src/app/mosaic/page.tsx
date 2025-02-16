@@ -138,7 +138,7 @@ export default function MosaicPage() {
               <div key={content.id} className="min-w-[600px] md:min-w-[600px] bg-white/10 backdrop-blur-sm rounded-3xl overflow-hidden snap-center transform transition-all hover:bg-white/15">
                 <div className=" h-72 md:h-72"> {/* Adjust the height here */}
                 <iframe
-                  src={`https://open.spotify.com/embed/playlist/5DNPXxrdT3sqkyfOjPNvKG?theme=0`}  // Ensure `spotifyId` is a valid track ID
+                  src={`https://open.spotify.com/embed/playlist/5ZYhYLH41pIIJN3XsOIeDA?theme=0`}  // Ensure `spotifyId` is a valid track ID
                   width="100%"
                   height="400px"
                   frameBorder="0"
