@@ -6,6 +6,7 @@ import { Mic } from "lucide-react"
 import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import { ChevronRight } from "lucide-react"
 
 
 const questions = [
@@ -192,23 +193,25 @@ export default function SurveyPage() {
           )}
         </div>
       </div>
-       {/* Next button */}
-       <div className="mt-12 absolute top-1/2 right-0 transform -translate-y-1/2 pr-4">
-          {questionIndex < questions.length - 1 ? (
-            <button
-              onClick={handleNext}
-              className="px-6 py-3 bg-white text-black font-medium rounded-lg transition-all hover:scale-105 hover:bg-gray-200"
-            >
-              Next
-            </button>
-          ) : (
-            <Link href="/mosaic">
-              <button className="px-6 py-3 bg-white text-black font-medium rounded-lg transition-all hover:scale-105 hover:bg-gray-200">
-                Finish
-              </button>
-            </Link>
-          )}
-      </div>
+    {/* Next button */}
+    {questionIndex < questions.length - 1 ? (
+    <button
+        onClick={handleNext}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all"
+        aria-label="Next"
+    >
+        <ChevronRight className="w-6 h-6" />
+    </button>
+    ) : (
+    <Link href="/mosaic">
+        <button
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all"
+        aria-label="Finish"
+        >
+        <ChevronRight className="w-6 h-6" />
+        </button>
+    </Link>
+    )}
       {/* Footer */}
       <div className="w-full bg-[#1b0707] text-center text-white font-sans text-sm py-4">
         made with <span className="text-red-500">❤️</span> for NSBE Hacks 2025
