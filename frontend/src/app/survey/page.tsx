@@ -7,6 +7,7 @@ import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 
+const res = []
 
 const questions = [
   'Who are you inspired by?',
@@ -113,13 +114,12 @@ export default function SurveyPage() {
     }
   }
   const handleNext = () => {
-    console.log('john')
     if (questionIndex < questions.length - 1) {
+      res.push(questions[questionIndex] + ": " + fullTranscript)
       setQuestionIndex(questionIndex + 1)
-      setTranscript("") // Clear transcript for next question
-    } //else {
-    //   router.push("/final-page") // Navigate to the final page when done
-    // }
+      setInterimTranscript("")
+      setFullTranscript("") // Clear transcript for next question
+    } 
   }
   return (
     <main className={`min-h-screen w-full flex flex-col relative ${fraunces.variable} ${inter.variable}`}>
