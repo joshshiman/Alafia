@@ -5,6 +5,7 @@ import { Inter } from "next/font/google"
 import { Mic } from "lucide-react"
 import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
+import Link from "next/link"
 
 const fraunces = Fraunces({
   subsets: ["latin"],
