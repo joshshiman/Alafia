@@ -20,7 +20,15 @@ export default function Page() {
 
       <div className="flex flex-col flex-1 px-6 py-8 md:px-12 lg:px-24">
         {/* Logo */}
-        <div className="w-32 md:w-40 text-white text-2xl font-bold">ALAFIA</div>
+        <div className="w-32 md:w-40">
+          <Image 
+            src="/alafia-logo.svg"  // This path is relative to the public folder
+            alt="Alafia Logo"
+            width={160}
+            height={40}
+            style={{ width: '100%', height: 'auto' }}
+          />
+        </div>
 
         {/* Main content */}
         <div className="flex-1 flex flex-col justify-center max-w-4xl">
