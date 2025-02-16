@@ -7,8 +7,6 @@ import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 
-const res = []
-
 const questions = [
   'Who are you inspired by?',
   'What are your interests?',
@@ -35,6 +33,7 @@ export default function SurveyPage() {
   const [fullTranscript, setFullTranscript] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [questionIndex, setQuestionIndex] = useState(0)
+  const [res, setRes] = useState<string[]>([])
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
@@ -48,6 +47,10 @@ export default function SurveyPage() {
       setError("Speech recognition is not supported in this browser.")
     }
   }, [SpeechRecognition])
+
+  useEffect(() => {
+    console.log(res)
+  }, [res])
 
   const startRecording = () => {
     if (!SpeechRecognition) {
@@ -115,7 +118,9 @@ export default function SurveyPage() {
   }
   const handleNext = () => {
     if (questionIndex < questions.length - 1) {
-      res.push(questions[questionIndex] + ": " + fullTranscript)
+      setRes([...res, questions[questionIndex] + ": " + fullTranscript])
+
+      // res.push(questions[questionIndex] + ": " + fullTranscript)
       setQuestionIndex(questionIndex + 1)
       setInterimTranscript("")
       setFullTranscript("") // Clear transcript for next question
