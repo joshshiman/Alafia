@@ -23,12 +23,12 @@ export default function Page() {
         {/* Logo */}
         <div className="w-32 md:w-40 h-12 relative">
         <Link href="/">
-            <Image 
-              src="/Alafia-Logo.svg?height=48&width=160"  // This path is relative to the public folder
-              alt="Alafia Logo"
-              width={160}
-              height={40}
-              style={{ objectFit: "contain" }}
+            <Image
+                src="/Alafia-Logo.svg?height=48&width=160"
+                alt="Alafia Logo"
+                fill
+                style={{ objectFit: "contain" }}
+                priority
             />
         </Link>
         </div>
