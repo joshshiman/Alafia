@@ -9,6 +9,13 @@
 from google import genai
 import os
 from PIL import Image
+from dotenv import load_dotenv
+import json
+from pydantic import BaseModel, TypeAdapter
+from typing import List
+# from spotify import search_song, create_playlist, add_to_playlist
+
+load_dotenv()
 
 def load_images_from_directory(relative_directory_path):
     images = []
@@ -26,20 +33,63 @@ def load_images_from_directory(relative_directory_path):
             except Exception as e:
                 print(f"Error loading image {filename}: {e}")
     
-    return images
+    return 
 
-def call_gemini():
+
+class Movie(BaseModel):
+    title: str
+
+class Music(BaseModel):
+    title: str
+    artist: str
+
+class Recommendations(BaseModel):
+    movies: List[Movie]
+    music: List[Music]
+
+class GeminiResponse(BaseModel):
+    recommendations: Recommendations
+
+def call_gemini(prompt):
+    api_key = os.getenv("GEMINI_KEY")
     images = load_images_from_directory("./images")
 
-    client = genai.Client(api_key="AIzaSyD6LRy27aJwlixei-YgFi0Z2XkTV0Jav2g")
+    client = genai.Client(api_key=api_key)
     response = client.models.generate_content(
     model="gemini-2.0-flash",
-    contents=["What is common between these images, give me the response in a haiku.",
-              images])
+    config={
+        'response_mime_type': 'application/json',
+        'response_schema': GeminiResponse,
+    },
+    contents=[prompt,
+              # {images...}
+              ])
 
-    print(response.text)
+    # print(response.text)
+    data = json.loads(response.text)
 
-call_gemini()
+    if 'movies' in data.get('recommendations', {}) and data['recommendations']['movies']:
+        movies = [x["title"] for x in data["recommendations"]["movies"]]
+
+    if 'music' in data.get('recommendations', {}) and data['recommendations']['music']:
+        music = [(x["title"], x["artist"]) for x in data["recommendations"]["music"]]
+    
+    # print(movies)
+    # print(music)
+
+    return movies, music
+
+    # make spotify playlist
+    # uris = []
+    # for name, artist in music:
+    #     track_uri = search_song(name, artist)
+    #     if track_uri:
+    #         uris.append(track_uri)
+    # playlist = create_playlist("Alafia - Personalized Playlist", "A special playlist for a special person")
+    # add_to_playlist(playlist['id'], uris)
+    # print(playlist['external_urls']['spotify'])
+
+# call_gemini()
 
 # image_path_1 = r"C:\Users\build\Desktop\nsbe\alafia\backend\images\image1.jpg"  # Replace with the actual path to your first image
 # image_path_2 = r"C:\Users\build\Desktop\nsbe\alafia\backend\images\image2.jpeg"# Replace with the actual path to your second image

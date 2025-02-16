@@ -2,7 +2,6 @@ import requests
 import os
 from dotenv import load_dotenv
 
-test_songs = [('Alright', 'Kendrick Lamar'), ("Brown Skin Girl", 'Beyoncé, Blue Ivy, SAINt JHN, Wizkid'), ('The Thrill Is Gone', 'B.B. King')]
 load_dotenv()
 
 def create_playlist(name, description, public=True):
@@ -78,15 +77,15 @@ def add_to_playlist(playlist_id, tracks):
 
 
 # print(create_playlist("testing", "testing"))
-uris = []
-for name, artist in test_songs:
-    track_uri = search_song(name, artist)
-    if track_uri:
-        uris.append(track_uri)
+# uris = []
+# for name, artist in test_songs:
+#     track_uri = search_song(name, artist)
+#     if track_uri:
+#         uris.append(track_uri)
 
-playlist = create_playlist("random", "rando")
-add_to_playlist(playlist['id'], uris)
-print(playlist['external_urls']['spotify'])
+# playlist = create_playlist("random", "rando")
+# add_to_playlist(playlist['id'], uris)
+# print(playlist['external_urls']['spotify'])
 
     
 
