@@ -4,7 +4,7 @@ import { Fraunces } from "next/font/google"
 import { Inter } from "next/font/google"
 import { Mic } from "lucide-react"
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -19,7 +19,12 @@ const inter = Inter({
 export default function SurveyPage() {
   const [isRecording, setIsRecording] = useState(false)
   const [transcript, setTranscript] = useState("")
+  const [interimTranscript, setInterimTranscript] = useState("")
+  const [fullTranscript, setFullTranscript] = useState("")
   const [error, setError] = useState<string | null>(null)
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
 
   // Check if browser supports speech recognition
   const SpeechRecognition =
@@ -40,18 +45,27 @@ export default function SurveyPage() {
     try {
       const recognition = new SpeechRecognition()
 
-      recognition.continuous = false
+      recognition.continuous = true
       recognition.interimResults = true
 
       recognition.onstart = () => {
         setIsRecording(true)
         setError(null)
+        setTranscript("")
+        setInterimTranscript("")
+        setFullTranscript("")
       }
 
       recognition.onresult = (event) => {
         const current = event.resultIndex
-        const transcriptResult = event.results[current][0].transcript
-        setTranscript(transcriptResult)
+        const result = event.results[current][0].transcript
+
+        // Build interim transcript
+        if (event.results[current].isFinal) {
+          setFullTranscript((prev) => prev + " " + result)
+        } else {
+          setInterimTranscript(result)
+        }
       }
 
       recognition.onerror = (event) => {
@@ -64,9 +78,26 @@ export default function SurveyPage() {
       }
 
       recognition.start()
+      recognitionRef.current = recognition
+
+      // Start timeout to stop recording after inactivity
+      timeoutRef.current = setTimeout(() => {
+        stopRecording()
+      }, 10000) // 10 seconds timeout for inactivity
+
     } catch (err) {
       setError("Error starting recording")
       setIsRecording(false)
+    }
+  }
+
+  const stopRecording = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop()
+      setIsRecording(false)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
     }
   }
 
@@ -100,8 +131,7 @@ export default function SurveyPage() {
           {/* Microphone button */}
           <div className="flex flex-col items-center gap-4">
             <button
-              onClick={startRecording}
-              disabled={isRecording}
+              onClick={isRecording ? stopRecording : startRecording}
               className={`
                 w-24 h-24 rounded-full bg-[#f5eae5] 
                 flex items-center justify-center 
@@ -109,7 +139,7 @@ export default function SurveyPage() {
                 relative
                 ${isRecording ? "ring-4 ring-white/50" : ""}
               `}
-              aria-label={isRecording ? "Recording in progress" : "Start voice input"}
+              aria-label={isRecording ? "Stop recording" : "Start voice input"}
             >
               <Mic className={`w-10 h-10 text-black ${isRecording ? "animate-pulse" : ""}`} />
 
@@ -125,10 +155,10 @@ export default function SurveyPage() {
             <span className="text-white/80 text-sm font-sans">{isRecording ? "Listening..." : "Tap to speak"}</span>
           </div>
 
-          {/* Transcript display */}
-          {transcript && (
+          {/* Interim transcript display */}
+          {(interimTranscript || fullTranscript) && (
             <div className="mt-8 p-4 bg-white/10 rounded-lg max-w-md w-full">
-              <p className="text-white text-center">{transcript}</p>
+              <p className="text-white text-center">{(isRecording ? interimTranscript : fullTranscript)}</p>
             </div>
           )}
 
@@ -148,4 +178,3 @@ export default function SurveyPage() {
     </main>
   )
 }
-
