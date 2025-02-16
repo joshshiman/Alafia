@@ -15,23 +15,28 @@ def transcribe_audio():
     
     
     audio_file = request.files['audio']
+    file_name = audio_file.filename
+    local_file_path = os.path.join(os.getcwd(), file_name)
+    audio_file.save(local_file_path)
     
-    with tempfile.NamedTemporaryFile(delete=False) as temp_audio_file:
-        temp_audio_file.write(audio_file.read())
-        temp_audio_file.close()
+    # with tempfile.NamedTemporaryFile(delete=False) as temp_audio_file:
+    #     temp_audio_file.write(audio_file.read())
+    #     temp_audio_file.close()
 
-        try:
-            start = time.time()
-            result = model.transcribe(temp_audio_file.name)
-            print(result["text"])
-            transcription = result['text']
+    try:
+        start = time.time()
+        result = model.transcribe(local_file_path)
+        print(result["text"])
+        transcription = result['text']
 
-            end = time.time()
-            length = end - start
-            print("It took", length, "seconds!")
-        except Exception as e:
-            return jsonify({'error': str(e)}), 500
-        finally:
-            os.remove(temp_audio_file.name)
+        end = time.time()
+        length = end - start
+        print("It took", length, "seconds!")
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        # os.remove(temp_audio_file.name)
+        if os.path.exists(local_file_path):
+            os.remove(local_file_path)
 
-        return jsonify({'transcription': transcription})
+    return jsonify({'transcription': transcription})
