@@ -43,7 +43,7 @@ export default function Page() {
 
           {/* Glowing button */}
           <Link href="/survey">
-            <button className="inline-flex items-center justify-center w-fit px-8 py-4 text-lg font-medium text-white bg-accent rounded-full transition-all hover:scale-105 hover:brightness-110 shadow-[0_0_20px_rgba(217,217,217,0.3)] hover:shadow-[0_0_30px_rgba(217,217,217,0.5)]">
+            <button className="inline-flex items-center justify-center w-fit px-8 py-4 text-lg font-medium text-black bg-accent rounded-full transition-all hover:scale-105 hover:brightness-110 shadow-[0_0_20px_rgba(217,217,217,0.3)] hover:shadow-[0_0_30px_rgba(217,217,217,0.5)]">
               Get Started
             </button>
           </Link>
