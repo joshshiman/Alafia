@@ -21,15 +21,14 @@ def transcribe_audio():
         temp_audio_file.close()
 
         try:
-            with open(temp_audio_file.name, 'rb') as audio:
-                start = time.time()
-                result = model.transcribe(temp_audio_file.name)
-                print(result["text"])
-                transcription = result['text']
+            start = time.time()
+            result = model.transcribe(temp_audio_file.name)
+            print(result["text"])
+            transcription = result['text']
 
-                end = time.time()
-                length = end - start
-                print("It took", length, "seconds!")
+            end = time.time()
+            length = end - start
+            print("It took", length, "seconds!")
         except Exception as e:
             return jsonify({'error': str(e)}), 500
         finally:
