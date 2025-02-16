@@ -1,6 +1,7 @@
 import { Fraunces } from "next/font/google"
 import { Inter } from "next/font/google"
 import Image from "next/image"
+import Link from "next/link"
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -20,19 +21,21 @@ export default function Page() {
 
       <div className="flex flex-col flex-1 px-6 py-8 md:px-12 lg:px-24">
         {/* Logo */}
-        <div className="w-32 md:w-40">
-          <Image 
-            src="/alafia-logo.svg"  // This path is relative to the public folder
-            alt="Alafia Logo"
-            width={160}
-            height={40}
-            style={{ objectFit: "contain" }}
-          />
+        <div className="w-32 md:w-40 h-12 relative">
+        <Link href="/">
+            <Image 
+              src="/Alafia-Logo.svg?height=48&width=160"  // This path is relative to the public folder
+              alt="Alafia Logo"
+              width={160}
+              height={40}
+              style={{ objectFit: "contain" }}
+            />
+        </Link>
         </div>
 
         {/* Main content */}
         <div className="flex-1 flex flex-col justify-center max-w-4xl">
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-foreground leading-tight mb-6">
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-foreground text-white leading-tight mb-6">
             Get inspired by talented leaders
           </h1>
 
@@ -41,9 +44,11 @@ export default function Page() {
           </p>
 
           {/* Glowing button */}
-          <button className="inline-flex items-center justify-center w-fit px-8 py-4 text-lg font-medium text-white bg-accent rounded-full transition-all hover:scale-105 hover:brightness-110 shadow-[0_0_20px_rgba(217,217,217,0.3)] hover:shadow-[0_0_30px_rgba(217,217,217,0.5)]">
-            Get Started
-          </button>
+          <Link href="/survey">
+            <button className="inline-flex items-center justify-center w-fit px-8 py-4 text-lg font-medium text-black bg-accent rounded-full transition-all hover:scale-105 hover:brightness-110 shadow-[0_0_20px_rgba(217,217,217,0.3)] hover:shadow-[0_0_30px_rgba(217,217,217,0.5)]">
+              Get Started
+            </button>
+          </Link>
         </div>
       </div>
 
