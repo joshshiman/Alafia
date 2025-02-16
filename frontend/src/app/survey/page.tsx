@@ -4,7 +4,17 @@ import { Fraunces } from "next/font/google"
 import { Inter } from "next/font/google"
 import { Mic } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { useState, useEffect } from "react"
+
+const questions = [
+  'Who are you inspired by?',
+  'What are your interests?',
+  'What music do you like?',
+  'How are you feeling today?',
+  'What do you want to work on?'
+]
+
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -20,6 +30,7 @@ export default function SurveyPage() {
   const [isRecording, setIsRecording] = useState(false)
   const [transcript, setTranscript] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [questionIndex, setQuestionIndex] = useState(0)
 
   // Check if browser supports speech recognition
   const SpeechRecognition =
@@ -69,7 +80,15 @@ export default function SurveyPage() {
       setIsRecording(false)
     }
   }
-
+  const handleNext = () => {
+    console.log('here');
+    if (questionIndex < questions.length - 1) {
+      setQuestionIndex(questionIndex + 1)
+      setTranscript("") // Clear transcript for next question
+    } //else {
+    //   router.push("/final-page") // Navigate to the final page when done
+    // }
+  }
   return (
     <main className={`min-h-screen w-full flex flex-col relative ${fraunces.variable} ${inter.variable}`}>
       {/* Gradient background */}
@@ -90,11 +109,11 @@ export default function SurveyPage() {
         {/* Main content */}
         <div className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto w-full">
           {/* Progress text */}
-          <p className="font-sans text-xl text-white/90 mb-6">Let&apos;s learn more about you... (1/5)</p>
+          <p className="font-sans text-xl text-white/90 mb-6">Let&apos;s learn more about you... ({questionIndex + 1}/5)</p>
 
           {/* Question */}
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-white text-center mb-16">
-            Who are you inspired by?
+            {questions[questionIndex]}
           </h1>
 
           {/* Microphone button */}
@@ -140,7 +159,23 @@ export default function SurveyPage() {
           )}
         </div>
       </div>
-
+       {/* Next button */}
+       <div className="mt-12 absolute top-1/2 right-0 transform -translate-y-1/2 pr-4">
+          {questionIndex < questions.length - 1 ? (
+            <button
+              onClick={handleNext}
+              className="px-6 py-3 bg-white text-black font-medium rounded-lg transition-all hover:scale-105 hover:bg-gray-200"
+            >
+              Next
+            </button>
+          ) : (
+            <Link href="/mosaic">
+              <button className="px-6 py-3 bg-white text-black font-medium rounded-lg transition-all hover:scale-105 hover:bg-gray-200">
+                Finish
+              </button>
+            </Link>
+          )}
+      </div>
       {/* Footer */}
       <div className="w-full bg-[#1b0707] text-center text-white font-sans text-sm py-4">
         made with <span className="text-red-500">❤️</span> for NSBE Hacks 2025
