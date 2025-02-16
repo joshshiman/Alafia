@@ -1,5 +1,5 @@
 # Alafia
-Culturally-Aware Mosaics Based on your Mood
+Sharable Culturally-Aware Mosaics Based on your Mood
 > Diego Serrano Martello, John Fitzgerald, Joshua Shiman and Joel Lawrence
 
 
