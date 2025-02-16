@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Azeret_Mono as Geist_Mono } from 'next/font/google';
 import { Toaster } from "sonner"
 import "./globals.css";
+import { GlobalStateProvider } from './context/GlobalStateContext'; // Adjust path if necessary
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <GlobalStateProvider>
+          {children}
+        </GlobalStateProvider>
         <Toaster />
       </body>
     </html>

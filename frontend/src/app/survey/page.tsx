@@ -7,6 +7,7 @@ import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
+import { useGlobalState } from '../context/GlobalStateContext'; // Adjust path if necessary
 
 const questions = [
   'Who are you inspired by?',
@@ -34,7 +35,10 @@ export default function SurveyPage() {
   const [fullTranscript, setFullTranscript] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [questionIndex, setQuestionIndex] = useState(0)
-  const [res, setRes] = useState<string[]>([])
+  // const [res, setRes] = useState<string[]>([])
+  const {
+    res, setRes
+  } = useGlobalState();
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
@@ -212,6 +216,7 @@ export default function SurveyPage() {
         <button
         className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-all"
         aria-label="Finish"
+        onClick={() => {setRes([...res, questions[questionIndex] + ": " + fullTranscript])}}
         >
         <ChevronRight className="w-6 h-6" />
         </button>

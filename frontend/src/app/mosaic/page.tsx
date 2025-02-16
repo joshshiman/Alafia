@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import Link from "next/link"
+import { useGlobalState } from '../context/GlobalStateContext'; // Adjust path if necessary
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -52,6 +53,9 @@ export default function MosaicPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+  const {
+    res, setRes
+  } = useGlobalState();
 
   const scroll = (direction: "left" | "right") => {
     if (!scrollContainerRef.current) return
