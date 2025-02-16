@@ -13,6 +13,11 @@ const inter = Inter({
   variable: "--font-inter",
 })
 
+export const metadata = {
+  title: "Alafia",
+  description: "Culturally Curated Mosaic",
+}
+
 export default function Page() {
   return (
     <main className={`min-h-screen w-full flex flex-col relative ${fraunces.variable} ${inter.variable}`}>
@@ -36,11 +41,11 @@ export default function Page() {
         {/* Main content */}
         <div className="flex-1 flex flex-col justify-center max-w-4xl">
           <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-foreground text-white leading-tight mb-6">
-            Get inspired by talented leaders
+            Cultural Mosaics
           </h1>
 
           <p className="font-sans text-xl md:text-2xl text-muted mb-12 max-w-2xl">
-            Alafia enables underrepresented groups to gain greater visibility and strength with unity
+          Create a bespoke pathway of inspiration rooted in cultural pride
           </p>
 
           {/* Glowing button */}
