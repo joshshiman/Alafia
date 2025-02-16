@@ -23,7 +23,7 @@ def transcribe_audio():
         try:
             with open(temp_audio_file.name, 'rb') as audio:
                 start = time.time()
-                result = model.transcribe(r"audio.mp3")
+                result = model.transcribe(temp_audio_file.name)
                 print(result["text"])
                 transcription = result['text']
 
