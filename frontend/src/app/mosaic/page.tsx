@@ -8,6 +8,7 @@ import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
+import Link from "next/link"
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -89,14 +90,16 @@ export default function MosaicPage() {
 
       <div className="flex flex-col flex-1 px-6 py-8 md:px-12 lg:px-24">
         {/* Logo */}
-        <div className="w-32 md:w-40 h-12 relative mb-12">
-          <Image
-            src="/Alafia-Logo.svg?height=48&width=160"
-            alt="Alafia Logo"
-            fill
-            style={{ objectFit: "contain" }}
-            priority
-          />
+        <div className="w-32 md:w-40 h-12 relative">
+        <Link href="/">
+            <Image
+                src="/Alafia-Logo.svg?height=48&width=160"
+                alt="Alafia Logo"
+                fill
+                style={{ objectFit: "contain" }}
+                priority
+            />
+        </Link>
         </div>
 
         {/* Title */}
