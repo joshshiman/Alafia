@@ -33,7 +33,7 @@ export default function Page() {
 
         {/* Main content */}
         <div className="flex-1 flex flex-col justify-center max-w-4xl">
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-foreground leading-tight mb-6">
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-foreground text-white leading-tight mb-6">
             Get inspired by talented leaders
           </h1>
 
