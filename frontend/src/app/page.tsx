@@ -26,7 +26,7 @@ export default function Page() {
             alt="Alafia Logo"
             width={160}
             height={40}
-            style={{ width: '100%', height: 'auto' }}
+            style={{ objectFit: "contain" }}
           />
         </div>
 
